@@ -164,15 +164,15 @@ const Todo = () => {
                         </div>
 
                         <div className={`py-4 ${showToggle ? 'block' : 'hidden'}`}>
-                            <ToggleComplete onRemoveAll={handleRemoveAll} onToggleShow={handleToggleShow}/>
+                            <ToggleComplete onRemoveAll={handleRemoveAll} onToggleShow={handleToggleShow} todos={todos} completedTodo={completedTodo} />
                         </div>
 
                         {showTodo ? (
-                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto scrollbar`}>
+                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto scrollbar-thin scrollbar-track-slate-950 scrollbar-thumb-slate-500 scrollbar-thumb-rounded scrollbar-track-rounded`}>
                                 <TodoContent todos={todos} onEditTodo={handleEditTodo} onDeleteTodo={handleDeleteTodo} onCompleteTodo={handleCompleteTodo}/>
                             </div>
                             ) : (
-                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto scrollbar`}>
+                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto scrollbar-thin scrollbar-track-slate-950 scrollbar-thumb-slate-500`}>
                                 <CompletedTodo completedTasks={completedTodo} removeTask={handleDeleteTodo} undoTask={handleUndoTodo}/>
                             </div>
                         )}

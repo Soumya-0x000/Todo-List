@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ToggleComplete = ({onRemoveAll, onToggleShow}) => {
+const ToggleComplete = ({onRemoveAll, onToggleShow, todos, completedTodo}) => {
     
     const [todoColor, setTodoColor] = useState(true);
     const [completedColor, setCompletedColor] = useState(false);
@@ -37,15 +37,19 @@ const ToggleComplete = ({onRemoveAll, onToggleShow}) => {
                 {/* ToDo */}
                 <button
                     onClick={handleTodoClick}
-                    className={`font-semibold rounded-ful  ${todoColor ? 'bg-green-700 text-lime-300' : 'bg-blue-700 text-blue-300'} px-4 sm:px-5 py-1 transition-all duration-400`}>
+                    className={`font-semibold flex gap-x-2 ${todoColor ? 'bg-green-700 text-lime-300' : 'bg-blue-700 text-blue-300'} px-[.7rem] md:px-4 lg:px-5 py-1 transition-all duration-400`}>
                     ToDo
+
+                    <p>{todos.length}</p>
                 </button>
                 
                 {/* Completed */}
                 <button
                     onClick={handleCompletedClick}
-                    className={`font-semibold rounded-ful ${completedColor ? 'bg-green-700 text-lime-300' : 'bg-blue-700 text-blue-300'} px-4 sm:px-5 py-1 transition-all duration-400`}>
+                    className={`font-semibold flex gap-x-2 ${completedColor ? 'bg-green-700 text-lime-300' : 'bg-blue-700 text-blue-300'} px-[.7rem] md:px-4 lg:px-5 py-1 transition-all duration-400`}>
                     Completed
+
+                    <p>{completedTodo.length}</p>
                 </button>
             </div>
 
@@ -53,7 +57,7 @@ const ToggleComplete = ({onRemoveAll, onToggleShow}) => {
             <div>
                 <button 
                 onClick={todoColor ? handleRemoveAllTodo : handleRemoveAllComplete}
-                className={`font-semibold rounded-full bg-violet-600 text-pink-200 px-4 sm:px-5 py-1 transition-all duration-400 sm:text-lg active:bg-pink-200 active:text-violet-600`}>
+                className={`font-semibold rounded-full bg-violet-600 text-pink-200 px-[.7rem] md:px-4 lg:px-5 py-1 transition-all duration-400 sm:text-lg active:bg-pink-200 active:text-violet-600`}>
                     Remove All
                 </button>
             </div>
