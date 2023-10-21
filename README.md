@@ -7,10 +7,9 @@ The TodoList is a web-based task management application designed to help you sta
 
 Features
 1. Create, Edit, and Delete Todo Items
+
 [Create]: You can add as many todo items as you want by simply entering the task name and it's description by clicking the "Add" button.
-
 [Edit]: To edit a todo item, click on the item you want to modify, and the task name becomes editable. Make your changes and press Enter to save them.
-
 [Delete]: Remove unwanted tasks by clicking the delete icon next to each todo item.
 
 2. [Mark Tasks as Completed]: For each task, you can mark it as "completed" by checking the checkbox next to it.
