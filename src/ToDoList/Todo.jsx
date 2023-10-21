@@ -172,7 +172,7 @@ const Todo = () => {
                                 <TodoContent todos={todos} onEditTodo={handleEditTodo} onDeleteTodo={handleDeleteTodo} onCompleteTodo={handleCompleteTodo}/>
                             </div>
                             ) : (
-                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto scrollbar-thin scrollbar-track-slate-950 scrollbar-thumb-slate-500`}>
+                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto scrollbar-thin scrollbar-track-slate-950 scrollbar-thumb-slate-500 scrollbar-thumb-rounded scrollbar-track-rounded`}>
                                 <CompletedTodo completedTasks={completedTodo} removeTask={handleDeleteTodo} undoTask={handleUndoTodo}/>
                             </div>
                         )}
