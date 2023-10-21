@@ -168,11 +168,11 @@ const Todo = () => {
                         </div>
 
                         {showTodo ? (
-                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto $`}>
+                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto scrollbar`}>
                                 <TodoContent todos={todos} onEditTodo={handleEditTodo} onDeleteTodo={handleDeleteTodo} onCompleteTodo={handleCompleteTodo}/>
                             </div>
                             ) : (
-                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto $`}>
+                            <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[27.3rem] overflow-y-auto scrollbar`}>
                                 <CompletedTodo completedTasks={completedTodo} removeTask={handleDeleteTodo} undoTask={handleUndoTodo}/>
                             </div>
                         )}
