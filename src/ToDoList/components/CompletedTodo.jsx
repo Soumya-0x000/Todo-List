@@ -28,7 +28,7 @@ const CompletedTodo = ({ completedTasks, removeTask, undoTask }) => {
                         transition={{ delay: 0.2, damping: 1 }}
                         className='w-full h-auto max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[26.9rem] lg:max-w-[43rem] xl:max-w-[57rem] overflow-x-auto scrollbar-thin scrollbar-thumb-lime-300 space-y-2 sm:space-y-3 text-white'>
                         <p className='text-[1.6rem] lg:text-3xl text-green-400 font-bold tracking-wide'>{task.title}</p>
-                        <p className='text-[1rem] lg:text-xl'>{task.description}</p>
+                        <p className='text-[1rem] lg:text-xl pb-2'>{task.description}</p>
                     </motion.div>
 
                     <div className='flex flex-col md:flex-row gap-y-2 gap-x-3 lg:gap-x-5 sm:text-lg md:text-2xl lg:text-[1.7rem]'>
