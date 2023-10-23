@@ -64,24 +64,24 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                         {editIndex === index ? (
                             <div className='flex flex-col gap-y-1.5'>
                                 <input
-                                    type='text'
-                                    value={editTitle}
-                                    onChange={(e) => setEditTitle(e.target.value)}
-                                    className='text-[1.4rem] lg:text-3xl text-green-400 font-bold tracking-wide bg-neutral-700 focus:outline-none focus:border-none rounded-md pl-3 py-1 mr-7'
-                                    placeholder='Edit title...'/>
+                                type='text'
+                                value={editTitle}
+                                onChange={(e) => setEditTitle(e.target.value)}
+                                className='text-[1.2rem] sm:text-[1.6rem] lg:text-3xl text-green-400 font-bold tracking-wide bg-neutral-700 focus:outline-none focus:border-none rounded-md pl-1 py-1 md:mr-3 lg:mr-6'
+                                placeholder='Edit title...'/>
 
                                 <input
-                                    type='text'
-                                    value={editDescription}
-                                    onChange={(e) => setEditDescription(e.target.value)}
-                                    className='text-[1rem] lg:text-xl bg-neutral-700 focus:outline-none focus:border-none rounded-md pl-3 py-1 mr-7'
-                                    placeholder='Edit description...'/>
+                                type='text'
+                                value={editDescription}
+                                onChange={(e) => setEditDescription(e.target.value)}
+                                className='text-[1rem] lg:text-xl bg-neutral-700 focus:outline-none focus:border-none rounded-md pl-1 py-1 md:mr-3 lg:mr-6'
+                                placeholder='Edit description...'/>
                             </div>
                         ) : (
-                            <>
+                            <div className='space-y-2 max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[26.9rem] lg:max-w-[43rem] xl:max-w-[57rem] overflow-x-auto scrollbar-thin scrollbar-thumb-lime-300'>
                                 <p className='text-[1.2rem] sm:text-[1.6rem] lg:text-3xl text-green-400 font-bold tracking-wide'>{todo.title}</p>
                                 <p className='text-[1rem] lg:text-xl'>{todo.description}</p>
-                            </>
+                            </div>
                         )}
                     </motion.div>
 
@@ -89,25 +89,24 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                         {editIndex === index ? (
                             <div className='flex flex-col gap-y-2 md:text-lg xl:text-xl'>
                                 <button
-                                    onClick={() => handleSave(index)}
-                                    className='px-2 py-1 rounded-lg bg-indigo-700 text-green-300 active:bg-green-300 active:text-indigo-700 font-semibold transition-all'>
+                                onClick={() => handleSave(index)}
+                                className='px-2 py-1 rounded-lg bg-indigo-700 text-green-300 active:bg-green-300 active:text-indigo-700 font-semibold transition-all'>
                                     Save
                                 </button>
 
                                 <button
-                                    onClick={() => setEditIndex(null)}
-                                    className='px-2 py-1 rounded-lg bg-indigo-700 text-green-300 active:bg-green-300 active:text-indigo-700 font-semibold transition-all'>
+                                onClick={() => setEditIndex(null)}
+                                className='px-2 py-1 rounded-lg bg-indigo-700 text-green-300 active:bg-green-300 active:text-indigo-700 font-semibold transition-all'>
                                     Cancel
                                 </button>
                             </div>
                         ) : (
                             iconData.map((data, id) => (
                                 <FontAwesomeIcon
-                                    key={id}
-                                    icon={data.icon}
-                                    className={`text-green-300 ${id === 0 ? 'hover:text-blue-400' : id === 1 ? 'hover:text-red-400' : 'hover:text-yellow-400'} transition-all active:scale-110 cursor-pointer`}
-                                    onClick={() => handleIconClick(index, data.icon)}
-                                />
+                                key={id}
+                                icon={data.icon}
+                                className={`text-green-300 ${id === 0 ? 'hover:text-blue-400' : id === 1 ? 'hover:text-red-400' : 'hover:text-yellow-400'} transition-all active:scale-110 cursor-pointer`}
+                                onClick={() => handleIconClick(index, data.icon)}/>
                             ))
                         )}
                     </div>

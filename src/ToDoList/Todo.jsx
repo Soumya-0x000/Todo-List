@@ -130,11 +130,11 @@ const Todo = () => {
                                         <label className='text-violet-300 font-semibold tracking-wider font-lato text-lg sm:text-[1.2rem]'>Title</label>
                                         
                                         <input 
-                                            type="text" 
-                                            placeholder='Task Title' 
-                                            value={todoTitle}
-                                            onChange={(e) => setTodoTitle(e.target.value)}
-                                            className='bg-neutral-900 w-[17rem] sm:w-[19rem] md:w-[28rem] lg:w-[22rem] xl:w-[29rem] rounded-md py-1.5 sm:py-3 pl-3 sm:pl-6 pr-2 sm:pr-4 focus:outline-none text-gray-300 text-[1rem] sm:text-lg focus:border-[.1rem] focus:border-green-400 tracking-wide'/>
+                                        type="text" 
+                                        placeholder='Task Title' 
+                                        value={todoTitle}
+                                        onChange={(e) => setTodoTitle(e.target.value)}
+                                        className='bg-neutral-900 w-[17rem] sm:w-[19rem] md:w-[28rem] lg:w-[22rem] xl:w-[29rem] rounded-md py-1.5 sm:py-3 pl-3 sm:pl-6 pr-2 sm:pr-4 focus:outline-none text-gray-300 text-[1rem] sm:text-lg focus:border-[.1rem] focus:border-green-400 tracking-wide'/>
                                     </div>
 
                                     {/* Description */}

@@ -26,23 +26,21 @@ const CompletedTodo = ({ completedTasks, removeTask, undoTask }) => {
                         initial={{ y: -100 }}
                         animate={{ y: 0 }}
                         transition={{ delay: 0.2, damping: 1 }}
-                        className='w-full h-auto space-y-1.5 sm:space-y-3 text-white'>
+                        className='w-full h-auto max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[26.9rem] lg:max-w-[43rem] xl:max-w-[57rem] overflow-x-auto scrollbar-thin scrollbar-thumb-lime-300 space-y-2 sm:space-y-3 text-white'>
                         <p className='text-[1.6rem] lg:text-3xl text-green-400 font-bold tracking-wide'>{task.title}</p>
                         <p className='text-[1rem] lg:text-xl'>{task.description}</p>
                     </motion.div>
 
                     <div className='flex flex-col md:flex-row gap-y-2 gap-x-3 lg:gap-x-5 sm:text-lg md:text-2xl lg:text-[1.7rem]'>
                         <FontAwesomeIcon
-                            icon={faTrashCan}
-                            className='text-green-300 hover:text-red-400 transition-all active:scale-110 cursor-pointer'
-                            onClick={() => deleteTodo(index, completedTasks)}
-                        />
+                        icon={faTrashCan}
+                        className='text-green-300 hover:text-red-400 transition-all active:scale-110 cursor-pointer'
+                        onClick={() => deleteTodo(index, completedTasks)}/>
 
                         <FontAwesomeIcon
-                            icon={faUndo}
-                            className='text-green-300 hover:text-violet-400 hover:rotate-[360deg] duration-500 transition-all active:scale-110 cursor-pointer'
-                            onClick={() => undoCompletedTodo(index, completedTasks)}
-                        />
+                        icon={faUndo}
+                        className='text-green-300 hover:text-violet-400 hover:rotate-[360deg] duration-500 transition-all active:scale-110 cursor-pointer'
+                        onClick={() => undoCompletedTodo(index, completedTasks)}/>
                     </div>
                 </motion.div>
             ))}
