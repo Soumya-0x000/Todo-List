@@ -80,7 +80,7 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                         ) : (
                             <div className='space-y-2 max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[26.9rem] lg:max-w-[43rem] xl:max-w-[57rem] overflow-x-auto scrollbar-thin scrollbar-thumb-lime-300'>
                                 <p className='text-[1.2rem] sm:text-[1.6rem] lg:text-3xl text-green-400 font-bold tracking-wide'>{todo.title}</p>
-                                <p className='text-[1rem] lg:text-xl'>{todo.description}</p>
+                                <p className='text-[1rem] lg:text-xl pb-2'>{todo.description}</p>
                             </div>
                         )}
                     </motion.div>
