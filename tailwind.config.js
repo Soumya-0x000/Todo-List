@@ -37,4 +37,7 @@ export default {
       addUtilities (newUtilities);
     }
   ],
+  screens: {
+    xs: "350px",
+  }
 }

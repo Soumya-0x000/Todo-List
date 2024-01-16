@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import ToggleBtn from './ToggleBtn';
+import AddRemoveBtn from './AddRemoveBtn';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
 
 const ToggleComplete = ({onRemoveAll, onToggleShow, todos, completedTodo}) => {
     
     const [todoColor, setTodoColor] = useState(true);
-    const [completedColor, setCompletedColor] = useState(false);
 
     const handleTodoClick = () => {
         setTodoColor(true);
-        setCompletedColor(false);
         onToggleShow(true);
     }
 
     const handleCompletedClick = () => {
         setTodoColor(false);
-        setCompletedColor(true);
         onToggleShow(false);
     }
 
@@ -40,13 +39,7 @@ const ToggleComplete = ({onRemoveAll, onToggleShow, todos, completedTodo}) => {
                 completedLength={completedTodo.length} 
             />
             {/* Remove all button */}
-            <div>
-                <button 
-                onClick={todoColor ? handleRemoveAllTodo : handleRemoveAllComplete}
-                className={`font-semibold rounded-full bg-violet-600 text-pink-200 px-[.7rem] md:px-4 lg:px-5 py-1 transition-all duration-400 sm:text-lg active:bg-pink-200 active:text-violet-600`}>
-                    Remove All
-                </button>
-            </div>
+            <AddRemoveBtn handleAddTodo={todoColor ? handleRemoveAllTodo : handleRemoveAllComplete} text={'Remove All'} icon={faMinus} />
         </div>
     );
 }

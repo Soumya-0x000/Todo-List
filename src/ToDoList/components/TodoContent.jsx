@@ -55,12 +55,12 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                     animate={{ y: 0 }}
                     transition={{ duration: 0.3 }}
                     key={index}
-                    className='hover:ring-[1px] hover:ring-green-300 bg-slate-950 flex justify-between items-center px-3 lg:px-4 py-2 gap-x-3 '>
+                    className='hover:ring-[1px] hover:ring-cyan-400 bg-slate-950 flex justify-between items-center px-3 lg:px-4 py-2 gap-x-3 relative'>
                     <motion.div
                         initial={{ y: -100 }}
                         animate={{ y: 0 }}
                         transition={{ delay: 0.2, damping: 1 }}
-                        className='w-full h-auto space-y-1.5 sm:space-y-3 text-white'>
+                        className='xl:w-[70rem] 2xl:w-[80rem] h-auto space-y-1.5 sm:space-y-3 text-white '>
                         {editIndex === index ? (
                             <div className='flex flex-col gap-y-1.5'>
                                 <input
@@ -78,14 +78,14 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                                 placeholder='Edit description...'/>
                             </div>
                         ) : (
-                            <div className='space-y-2 max-w-[17.5rem] sm:max-w-[20rem] md:max-w-[26.9rem] lg:max-w-[43rem] xl:max-w-[57rem] overflow-x-auto scrollbar-thin scrollbar-thumb-lime-300'>
+                            <div className='space-y-2 overflow-x-auto scrollbar-thin scrollbar-thumb-lime-300'>
                                 <p className='text-[1.2rem] sm:text-[1.6rem] lg:text-3xl bg-gradient-to-r from-blue-300 to-violet-300 bg-clip-text font-onest text-transparent  font-bold tracking-wide'>{todo.title}</p>
                                 <p className='text-[1rem] lg:text-xl pb-2 bg-gradient-to-br from-violet-400 to-cyan-300 bg-clip-text text-transparent font-lato '>{todo.description}</p>
                             </div>
                         )}
                     </motion.div>
 
-                    <div className='flex flex-col md:flex-row gap-y-2 gap-x-3 lg:gap-x-5 sm:text-lg md:text-2xl '>
+                    <div className='absolute h-full top-0 right-0 pl-3 sm:pl-6 pr-3 py-2 bg-slate-950 flex items-center justify-center flex-col md:flex-row gap-y-2 gap-x-3 lg:gap-x-5 sm:text-lg md:text-xl'>
                         {editIndex === index ? (
                             <div className='flex flex-col gap-y-2 md:text-lg xl:text-xl'>
                                 <button

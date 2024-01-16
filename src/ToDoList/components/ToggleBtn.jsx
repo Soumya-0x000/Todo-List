@@ -15,14 +15,14 @@ const ToggleBtn = ({ handleTodoClick, handleCompletedClick, todoLength, complete
     };
 
     return (
-        <div className=" px-2 py-2 rounded-lg bg-slate-900 flex items-center flex-wrap gap-2">
+        <div className=" px-2 py-2 sm:h-[51px] rounded-lg bg-slate-900 flex items-center flex-wrap gap-2">
             {tabs.map((tab, index) => (
                 <Chip
-                text={tab.name}
-                selected={selected === tab.name}
-                setSelected={() => handleClick(tab)}
-                key={index}
-                length={tab.length}
+                    text={tab.name}
+                    selected={selected === tab.name}
+                    setSelected={() => handleClick(tab)}
+                    key={index}
+                    length={tab.length}
                 />
             ))}
         </div>
@@ -37,8 +37,8 @@ const Chip = ({ text, selected, setSelected, length }) => {
             selected
             ? "text-white"
             : "text-slate-300 hover:text-slate-200 hover:bg-slate-700"
-        } text-lg transition-colors px-2.5 py-0.5 rounded-md relative`}>
-            <span className="relative z-10">{text} {length}</span>
+        } text-[13px] sm:text-lg transition-colors px-2 sm:px-2.5 py-0.5 rounded-md relative`}>
+            <span className="relative z-10 font-robotoMono">{text} {length}</span>
             {selected && (
                 <motion.span
                 layoutId="pill-tab"
