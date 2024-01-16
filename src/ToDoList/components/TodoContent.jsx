@@ -6,9 +6,9 @@ import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
     const iconData = [
-        { icon: faPenToSquare, onHover: 'blue' },
-        { icon: faTrashCan, onHover: 'red' },
-        { icon: faCheck, onHover: 'yellow' },
+        { icon: faPenToSquare, bgColor: 'text-green-300 ',  onHover: 'hover:text-green-600 ' },
+        { icon: faTrashCan, bgColor: 'text-red-400',  onHover: 'hover:text-red-500' },
+        { icon: faCheck, bgColor: 'text-yellow-200',  onHover: 'hover:text-yellow-600' },
     ];
 
     const [editIndex, setEditIndex] = useState(null);
@@ -60,21 +60,21 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                         initial={{ y: -100 }}
                         animate={{ y: 0 }}
                         transition={{ delay: 0.2, damping: 1 }}
-                        className='xl:w-[70rem] 2xl:w-[80rem] h-auto space-y-1.5 sm:space-y-3 text-white '>
+                        className='xl:w-[70rem] 2xl:w-[80rem] h-auto space-y-1.5 sm:space-y-3 text-white'>
                         {editIndex === index ? (
                             <div className='flex flex-col gap-y-1.5'>
                                 <input
                                 type='text'
                                 value={editTitle}
                                 onChange={(e) => setEditTitle(e.target.value)}
-                                className='text-[1.2rem] sm:text-[1.6rem] lg:text-3xl text-green-400 font-bold tracking-wide bg-slate-800 focus:outline-none focus:border-none rounded-md pl-2 py-1 md:mr-3 lg:mr-6'
+                                className='text-[1.2rem] sm:text-[1.6rem] lg:text-3xl text-orange-400 tracking-wide bg-slate-800 focus:outline-none focus:border-none rounded-md pl-2 py-1 md:mr-3 lg:mr-6'
                                 placeholder='Edit title...'/>
 
                                 <input
                                 type='text'
                                 value={editDescription}
                                 onChange={(e) => setEditDescription(e.target.value)}
-                                className='text-[1rem] lg:text-xl bg-slate-800 focus:outline-none focus:border-none rounded-md pl-2 py-1 md:mr-3 lg:mr-6'
+                                className='text-[1rem] lg:text-xl bg-slate-800 text-amber-200 focus:outline-none focus:border-none rounded-md pl-2 py-1 md:mr-3 lg:mr-6'
                                 placeholder='Edit description...'/>
                             </div>
                         ) : (
@@ -86,7 +86,7 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                         )}
                     </motion.div>
 
-                    <div className='absolute h-full top-0 right-0 pl-3 sm:pl-6 pr-3 py-2 bg-slate-950 flex items-center justify-center flex-col md:flex-row gap-y-2 gap-x-3 lg:gap-x-5 sm:text-lg md:text-xl'>
+                    <div className='absolute h-full top-0 right-0 pl-3 sm:pl-6 pr-3 py-2 bg-slate-950 flex items-center justify-center flex-col md:flex-row gap-y-2 gap-x-3 sm:text-lg md:text-[19px]'>
                         {editIndex === index ? (
                             <div className='flex flex-col gap-y-2 md:text-lg xl:text-xl'>
                                 <button
@@ -106,7 +106,7 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                                 <FontAwesomeIcon
                                 key={id}
                                 icon={data.icon}
-                                className={`text-green-300 ${id === 0 ? 'hover:text-blue-400' : id === 1 ? 'hover:text-red-400' : 'hover:text-yellow-400'} transition-all active:scale-110 cursor-pointer`}
+                                className={`${data.bgColor} ${data.onHover} transition-all active:scale-110 cursor-pointer`}
                                 onClick={() => handleIconClick(index, data.icon)}/>
                             ))
                         )}
