@@ -107,7 +107,7 @@ const Todo = () => {
                 <motion.div 
                 initial={{scale: 0, y: -300}}
                 animate={{scale: 1, y: 0}}
-                className='text-white text-4xl font-semibold font-montserrat'>
+                className=' bg-gradient-to-br from-violet-400 to-pink-300 bg-clip-text text-transparent text-4xl md:text-6xl font-bold font-montserrat'>
                     My ToDos
                 </motion.div>
                 
@@ -116,7 +116,7 @@ const Todo = () => {
                 animate={{scale: 1, y: 0}}
                 transition={{delay: .2, damping: 10}}
                 className='overflow-y-auto'>
-                    <div className='bg-gray-700 px-2.5 md:px-4 py-4'>
+                    <div className='bg-slate-700 px-2.5 md:px-4 py-4'>
                         
                         {/* Input section */}
                         <div className='border-b border-b-violet-400 pb-5'>
@@ -134,7 +134,7 @@ const Todo = () => {
                                         placeholder='Task Title' 
                                         value={todoTitle}
                                         onChange={(e) => setTodoTitle(e.target.value)}
-                                        className='bg-neutral-900 w-[17rem] sm:w-[19rem] md:w-[28rem] lg:w-[22rem] xl:w-[29rem] rounded-md py-1.5 sm:py-3 pl-3 sm:pl-6 pr-2 sm:pr-4 focus:outline-none text-gray-300 text-[1rem] sm:text-lg focus:border-[.1rem] focus:border-green-400 tracking-wide'/>
+                                        className='bg-neutral-900 w-[17rem] sm:w-[19rem] md:w-[28rem] lg:w-[22rem] xl:w-[29rem] rounded-md py-1.5 sm:py-3 pl-3 sm:pl-6 pr-2 sm:pr-4 focus:outline-none text-gray-300 text-[1rem] sm:text-lg focus:border-[.1rem] focus:border-fuchsia-300 tracking-wide font-onest'/>
                                     </div>
 
                                     {/* Description */}
@@ -146,7 +146,7 @@ const Todo = () => {
                                         placeholder='Task description' 
                                         value={todoDescription}
                                         onChange={(e) => setTodoDescription(e.target.value)}
-                                        className='bg-neutral-900 w-[17rem] sm:w-[19rem] md:w-[28rem] lg:w-[22rem] xl:w-[29rem] rounded-md py-1.5 sm:py-3 pl-3 sm:pl-6 pr-2 sm:pr-4 focus:outline-none  text-gray-300 text-[1rem] sm:text-lg focus:border-[.1rem] focus:border-green-400 tracking-wide'/>
+                                        className='bg-neutral-900 w-[17rem] sm:w-[19rem] md:w-[28rem] lg:w-[22rem] xl:w-[29rem] rounded-md py-1.5 sm:py-3 pl-3 sm:pl-6 pr-2 sm:pr-4 focus:outline-none  text-gray-300 text-[1rem] sm:text-lg focus:border-[.1rem] focus:border-fuchsia-300 tracking-wide'/>
                                     </div>
 
                                 </div>

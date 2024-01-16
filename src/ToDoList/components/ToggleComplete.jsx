@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ToggleBtn from './ToggleBtn';
 
 const ToggleComplete = ({onRemoveAll, onToggleShow, todos, completedTodo}) => {
     
@@ -31,28 +32,13 @@ const ToggleComplete = ({onRemoveAll, onToggleShow, todos, completedTodo}) => {
 
     return (
         <div className='flex items-center justify-between'>
-            
             {/* Todo Complete Toggle */}
-            <div className='flex gap-x-0 rounded-full overflow-hidden sm:text-lg'>
-                {/* ToDo */}
-                <button
-                    onClick={handleTodoClick}
-                    className={`font-semibold flex gap-x-2 ${todoColor ? 'bg-green-700 text-lime-300' : 'bg-blue-700 text-blue-300'} px-[.7rem] md:px-4 lg:px-5 py-1 transition-all duration-400`}>
-                    ToDo
-
-                    <p>{todos.length}</p>
-                </button>
-                
-                {/* Completed */}
-                <button
-                    onClick={handleCompletedClick}
-                    className={`font-semibold flex gap-x-2 ${completedColor ? 'bg-green-700 text-lime-300' : 'bg-blue-700 text-blue-300'} px-[.7rem] md:px-4 lg:px-5 py-1 transition-all duration-400`}>
-                    Completed
-
-                    <p>{completedTodo.length}</p>
-                </button>
-            </div>
-
+            <ToggleBtn 
+                handleTodoClick={handleTodoClick} 
+                handleCompletedClick={handleCompletedClick} 
+                todoLength={todos.length} 
+                completedLength={completedTodo.length} 
+            />
             {/* Remove all button */}
             <div>
                 <button 
