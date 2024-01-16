@@ -78,7 +78,8 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                                 placeholder='Edit description...'/>
                             </div>
                         ) : (
-                            <div className='space-y-2 overflow-x-auto scrollbar-thin scrollbar-thumb-lime-300'>
+                            <div 
+                            className='space-y-2 overflow-x-auto scrollbar-thin scrollbar-thumb-lime-300'>
                                 <p className='text-[1.2rem] sm:text-[1.6rem] lg:text-3xl bg-gradient-to-r from-blue-300 to-violet-300 bg-clip-text font-onest text-transparent  font-bold tracking-wide'>{todo.title}</p>
                                 <p className='text-[1rem] lg:text-xl pb-2 bg-gradient-to-br from-violet-400 to-cyan-300 bg-clip-text text-transparent font-lato '>{todo.description}</p>
                             </div>

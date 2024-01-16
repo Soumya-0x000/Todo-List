@@ -122,7 +122,6 @@ const Todo = () => {
                         {/* Input section */}
                         <div className='border-b border-b-violet-400 pb-5'>
                             <form className='flex sm:flex-col md:flex-row items-end sm:items-start md:items-end justify-between lg:items-end gap-x-1 gap-y-2 md:gap-x-10'>
-                                
                                 {/* Data input */}
                                 <div className='w-full flex flex-col gap-y-4 sm:gap-y-5 sm:flex-row gap-x-5'>    
                                     {/* Title */}
@@ -146,7 +145,7 @@ const Todo = () => {
                                         placeholder='Task description' 
                                         value={todoDescription}
                                         onChange={(e) => setTodoDescription(e.target.value)}
-                                        className='bg-gradient-to-tl from-violet-950 to-indigo-950 w-full rounded-md py-1.5 sm:py-3 pl-3 sm:pl-6 pr-2 sm:pr-4 focus:outline-none  placeholder:text-violet-300 text-blue-300 text-[1rem] sm:text-lg focus:border-[.1rem] focus:border-fuchsia-300 tracking-wide'/>
+                                        className='bg-gradient-to-tl from-violet-950 to-indigo-950 w-full rounded-md py-1.5 sm:py-3 pl-3 sm:pl-6 pr-2 sm:pr-4 focus:outline-none placeholder:text-violet-300 text-blue-300 text-[1rem] sm:text-lg focus:border-[.1rem] focus:border-fuchsia-300 tracking-wide font-onest'/>
                                     </div>
                                 </div>
 
