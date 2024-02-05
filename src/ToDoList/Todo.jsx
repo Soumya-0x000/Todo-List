@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import ToggleComplete from './components/ToggleComplete'
 import TodoContent from './components/TodoContent';
 import CompletedTodo from './components/CompletedTodo';
-import AddRemoveBtn from './components/AddRemoveBtn';
+import AddRemoveBtn from './components/button/AddRemoveBtn';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const Todo = () => {

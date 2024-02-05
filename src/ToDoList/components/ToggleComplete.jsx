@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ToggleBtn from './ToggleBtn';
-import AddRemoveBtn from './AddRemoveBtn';
+import ToggleBtn from './button/ToggleBtn';
+import AddRemoveBtn from './button/AddRemoveBtn';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 
 const ToggleComplete = ({onRemoveAll, onToggleShow, todos, completedTodo}) => {
