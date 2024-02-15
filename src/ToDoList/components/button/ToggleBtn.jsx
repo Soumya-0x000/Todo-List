@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 const ToggleBtn = ({ handleTodoClick, handleCompletedClick, todoLength, completedLength }) => {
     const tabs = [
@@ -8,6 +8,20 @@ const ToggleBtn = ({ handleTodoClick, handleCompletedClick, todoLength, complete
     ];
 
     const [selected, setSelected] = useState(tabs[0].name);
+    const comparableWidth = 360
+    const [isVerticalAlign, setIsVerticalAlign] = useState(window.innerWidth <= comparableWidth)
+
+    useLayoutEffect(() => {
+        const handleScrSize = () => {
+            window.innerWidth <= comparableWidth 
+                ? setIsVerticalAlign(true) 
+                : setIsVerticalAlign(false)
+        }
+        handleScrSize()
+
+        window.addEventListener("resize", handleScrSize)
+        return () => window.removeEventListener("resize", handleScrSize)
+    }, [])
 
     const handleClick = (tab) => {
         setSelected(tab.name);
@@ -15,7 +29,7 @@ const ToggleBtn = ({ handleTodoClick, handleCompletedClick, todoLength, complete
     };
 
     return (
-        <div className=" px-2 py-2 sm:h-[51px] rounded-lg bg-slate-900 flex items-center flex-wrap gap-2">
+        <div className={`px-2 py-2 sm:h-[51px] rounded-lg bg-slate-900 flex ${isVerticalAlign ? 'flex-col' : 'flex-row'} items-center flex-wrap gap-2`}>
             {tabs.map((tab, index) => (
                 <Chip
                     text={tab.name}
@@ -33,7 +47,7 @@ const Chip = ({ text, selected, setSelected, length }) => {
     return (
         <button
         onClick={setSelected}
-        className={`${
+        className={` ${
             selected
             ? "text-white"
             : "text-slate-300 hover:text-slate-200 hover:bg-slate-700"
