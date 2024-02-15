@@ -279,7 +279,7 @@ const Todo = () => {
                             </form>
                         </div>
                         
-                        {todos.length < 1 && (
+                        {(todos.length == 0 && completedTodo.length == 0) && (
                             <div className='w-full flex flex-col items-center justify-center gap-y-20 bg-gray-40 rounded-md mt-4'>
                                 <img src={doSomething}  className=' h-full animate-pulse'/>
                                 <div>
