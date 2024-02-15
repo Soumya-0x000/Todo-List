@@ -209,12 +209,8 @@ const Todo = () => {
     useEffect(() => {
         const fetchSortingData = async () => {
             if (showTodo) {
-                // const todoItem = await api.get('/remaining')
-                // todoItem?.status === 200 && setSortingData(todoItem?.data)
                 setSortingData(todos)
             } else {
-                // const todoItem = await api.get('/completed')
-                // todoItem.status === 200 && setSortingData(todoItem?.data)
                 setSortingData(completedTodo)
             }
         }
