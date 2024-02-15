@@ -70,7 +70,7 @@ const CompletedTodo = ({ completedTasks, removeTask, undoTask }) => {
 
                     {/* pop up date time */}
                     <Popup 
-                        showPopup={showPopup}
+                        popupVisibility={showPopup}
                         index={index}
                         todo={task}
                     />

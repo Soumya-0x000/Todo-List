@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
 
-const Popup = ({ showPopup, index, todo }) => {
+const Popup = ({ popupVisibility, index, todo }) => {
     return (
         <>
-            {showPopup[index] && (
+            {popupVisibility[index] && (
                 <motion.div 
                 className=' absolute text-green-300 bg-gradient-to-br from-indigo-950 to-violet-900 px-4 py-1 rounded-b-lg right-1/2 top-0 translate-x-1/2 text-center space-y-3'
                 initial={{opacity: 0, y: 60, x: '50%'}}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faCheck, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
@@ -16,8 +16,7 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
     const [editId, setEditId] = useState(null);
     const [editTitle, setEditTitle] = useState('');
     const [editDescription, setEditDescription] = useState('');
-    const [showPopup, setShowPopup] = useState(Array(todos.length).fill(false));
-    const [popUpVisibility, setPopUpVisibility] = useState(false);
+    const [popupVisibility, setPopupVisibility] = useState(Array(todos.length).fill(false));
 
     const editTodo = (id, index) => {
         setEditId(id);
@@ -65,24 +64,15 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
         }
     };
 
-    const handleShowPopup = (index) => {
-        const updatedPopup = [...showPopup]
-        updatedPopup[index] = !updatedPopup[index];
-        setShowPopup([...updatedPopup])
-    }
-    
-    const handleHidePopup = (index) => {
-        const updatedPopup = [...showPopup]
-        updatedPopup[index] = !updatedPopup[index]
-        setShowPopup([...updatedPopup]);
+    const handleTogglePopupVisibility = (index) => {
+        const updatedPopupVisibility = [...popupVisibility]
+        updatedPopupVisibility[index] = !updatedPopupVisibility[index];
+        setPopupVisibility([...updatedPopupVisibility])
     }
 
-    const handleClick = (index) => {
-        setPopUpVisibility(!popUpVisibility)
-        popUpVisibility
-            ? handleShowPopup(index)
-            : handleHidePopup(index)
-    }
+    useEffect(() => {
+        setPopupVisibility(Array(todos.length).fill(false))
+    }, [todos])
 
     return (
         <div className='space-y-2 md:space-y-3 py-1 rounded-lg overflow-hidden '>
@@ -118,7 +108,7 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
                         ) : (
                             <div 
                             className='space-y-2 overflow-x-auto pl-3 lg:pl-4 py-2 scrollbar-thin scrollbar-thumb-lime-300 cursor-pointer'
-                            onClick={() => handleClick(index)}>
+                            onClick={() => handleTogglePopupVisibility(index)}>
                                 <p className='text-[1rem] sm:text-[1.6rem] lg:text-3xl bg-gradient-to-r from-blue-300 to-violet-300 bg-clip-text font-onest text-transparent font-bold tracking-wide'>{todo.title}</p>
                                 <p className='text-[.9rem] lg:text-xl pb-1 bg-gradient-to-br from-violet-400 to-cyan-300 bg-clip-text text-transparent font-lato '>{todo.description}</p>
                             </div>
@@ -156,7 +146,7 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
 
                     {/* pop up date time */}
                     <Popup 
-                        showPopup={showPopup}
+                        popupVisibility={popupVisibility}
                         index={index}
                         todo={todo}
                     />
