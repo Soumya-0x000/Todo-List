@@ -1,10 +1,25 @@
 import { motion } from "framer-motion";
 import { useLayoutEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { currentStatus } from "../../../redux/slices/dataStatus";
 
-const ToggleBtn = ({ handleTodoClick, handleCompletedClick, todoLength, completedLength }) => {
+const ToggleBtn = () => {
+    const dispatch = useDispatch()
+
+    const todoLength = useSelector((state) => state.todoData.todo.length)
+    const completedTodoLength = useSelector((state) => state.completedTodoData.completedTodo.length)
+    
     const tabs = [
-        { name: "Todo", click: handleTodoClick, length: todoLength },
-        { name: "Completed", click: handleCompletedClick, length: completedLength }
+        { 
+            name: "Todo",
+            click: () => dispatch(currentStatus(true)),
+            length: todoLength
+        },
+        { 
+            name: "Completed", 
+            click: () => dispatch(currentStatus(false)), 
+            length: completedTodoLength 
+        }
     ];
 
     const [selected, setSelected] = useState(tabs[0].name);

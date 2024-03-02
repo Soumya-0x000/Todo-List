@@ -3,17 +3,47 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import Popup from './Popup';
+import { useDispatch, useSelector } from 'react-redux';
+import api from '../../api/api';
+import { removeCompletedTodoFromUI } from '../../redux/slices/completedTodoSlice';
+import { addTodo } from '../../redux/slices/todoSlice';
 
-const CompletedTodo = ({ completedTasks, removeTask, undoTask }) => {
-    const [showPopup, setShowPopup] = useState(Array(completedTasks.length).fill(false));
+const CompletedTodo = () => {
+    const completedTodoData = useSelector((state) => state.completedTodoData.completedTodo)
+    const dispatch = useDispatch()
+
+    const [showPopup, setShowPopup] = useState(Array(completedTodoData.length).fill(false));
     const [popUpVisibility, setPopUpVisibility] = useState(false);
 
-    const deleteTodo = (id, task) => {
-        removeTask(id, task);
+    const deleteTodo = async(id) => {
+        try {
+            await api.delete(`/completed/${id}`)
+            dispatch(removeCompletedTodoFromUI(id))
+        } catch (error) {
+            console.error(error)
+        }
     };
     
-    const undoCompletedTodo = (id, task) => {
-        undoTask(id, task);
+    const undoCompletedTodo = async(id) => {
+        try {
+            const dataToMoveInTodo = completedTodoData.filter(data => data.id === id)
+            dispatch(addTodo({
+                id: dataToMoveInTodo[0].id,
+                title: dataToMoveInTodo[0].title,
+                description: dataToMoveInTodo[0].description,
+                dateTime: dataToMoveInTodo[0].dateTime
+            }))
+            await api.post(`/remaining`, {
+                id: dataToMoveInTodo[0].id,
+                title: dataToMoveInTodo[0].title,
+                description: dataToMoveInTodo[0].description,
+                dateTime: dataToMoveInTodo[0].dateTime
+            })
+            dispatch(removeCompletedTodoFromUI(id))
+            await api.delete(`/completed/${id}`)
+        } catch (error) {
+            console.error(error)
+        }
     };
 
     const handleShowPopup = (index) => {
@@ -37,7 +67,7 @@ const CompletedTodo = ({ completedTasks, removeTask, undoTask }) => {
 
     return (
         <div className='space-y-2 rounded-lg overflow-hidden'>
-            {completedTasks.map((task, index) => (
+            {completedTodoData.map((task, index) => (
                 <motion.div
                 initial={{ y: -200 }}
                 animate={{ y: 0 }}
@@ -60,12 +90,12 @@ const CompletedTodo = ({ completedTasks, removeTask, undoTask }) => {
                         <FontAwesomeIcon
                         icon={faTrashCan}
                         className='text-red-400 hover:text-red-500 transition-all active:scale-110 cursor-pointer'
-                        onClick={() => deleteTodo(task.id, completedTasks)}/>
+                        onClick={() => deleteTodo(task.id)}/>
 
                         <FontAwesomeIcon
                         icon={faUndo}
                         className='text-blue-300 hover:text-blue-500 hover:rotate-[360deg] duration-500 transition-all active:scale-110 cursor-pointer'
-                        onClick={() => undoCompletedTodo(task.id, completedTasks)}/>
+                        onClick={() => undoCompletedTodo(task.id)}/>
                     </div>
 
                     {/* pop up date time */}

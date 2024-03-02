@@ -1,32 +1,44 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { motion } from 'framer-motion';
 import NavBar from './components/NavBar'
 import TodoContent from './components/TodoContent';
 import CompletedTodo from './components/CompletedTodo';
 import AddRemoveBtn from './components/button/AddRemoveBtn';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import api from '../api/api';
 import SortSection from './components/SortSection';
 import doSomething from '../asset/giphy.gif'
+import { addTodoData, fetchTodoData } from '../redux/slices/todoSlice';
+import { fetchCompletedTodoData } from '../redux/slices/completedTodoSlice';
 
 const Todo = () => {
-    const [todos, setTodos] = useState([]);
-    const [completedTodo, setCompletedTodo] = useState([]);
+    const todoData = useSelector((state) => state.todoData)
+    const completedTodoData = useSelector((state) => state.completedTodoData)
+    const dispatch = useDispatch()
+    const status = useSelector((state) => state.status)
+
     const [todoTitle, setTodoTitle] = useState('');
     const [todoDescription, setTodoDescription] = useState('');
+    const descriptionInputRef = useRef(null)
+    const titleInputRef = useRef(null)
+
     const [showToggle, setShowToggle] = useState(false);
-    const [showTodo, setShowTodo] = useState(true);
+
     const [isSmScreen, setIsSmScreen] = useState(window.innerWidth >= 1024);
     const comparableWidth = 380
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth >= comparableWidth)
-    const [sortingData, setSortingData] = useState(todos)
-
+    
     const randomId = () => {
         const arr = new Uint32Array(1)
         crypto.getRandomValues(arr)
         return '_' + arr[0]
     }
     
+    useEffect(() => {
+        dispatch(fetchTodoData());
+        dispatch(fetchCompletedTodoData());
+    }, [dispatch]);
+
     useLayoutEffect(() => {
         const handleResize = () => {
             setIsSmScreen(window.innerWidth >= 1024)
@@ -46,67 +58,24 @@ const Todo = () => {
             window.removeEventListener("resize", handleSortVisibility)
         }
     },[])
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const response = await api.get('/remaining')
-                const data = response.data
-                if(response.status === 200) {
-                    setTodos(data.map(contact => ({
-                        id: contact.id,
-                        title: contact.title,
-                        description: contact.description,
-                        dateTime: contact.dateTime,
-                    })))
-                } else throw new Error
-            } catch (error) {
-                console.error(error)
-            }
-        })()
-        .then(async () => {
-            try {
-                const completedResponse = await api.get("/completed")
-                const completedData = completedResponse.data;
-                if (completedResponse.status === 200) {
-                    setCompletedTodo(completedData.map(contact => ({
-                        id: contact.id,
-                        title: contact.title,
-                        description: contact.description,
-                        dateTime: contact.dateTime,
-                    })))
-                } else throw new Error
-            } catch (error) {
-                console.error(error)
-            }
-        })
-    }, []);
     
     useEffect(() => {
-        todos.length > 0 || completedTodo.length > 0 
+        todoData.todo.length > 0 || completedTodoData.completedTodo.length > 0 
             ? setShowToggle(true) 
             : setShowToggle(false)
-    }, [todos, completedTodo]);
+    }, [todoData.todo, completedTodoData.completedTodo]);
     
     const handleAddTodo = async (e) => {
         e.preventDefault();
         const id = randomId()
-        const currentDateTime = new Date()
+        const currentDateTime = new Date().toISOString()
         if(todoTitle) {
-            setTodos([ 
-                {
-                    id,
-                    title: todoTitle, 
-                    description: todoDescription,
-                    dateTime: currentDateTime,
-                }, ...todos
-            ]);
-            await api.post('/remaining', {
+            dispatch(addTodoData({
                 id,
                 title: todoTitle,
                 description: todoDescription,
-                dateTime: currentDateTime,
-            })
+                dateTime: currentDateTime
+            }))
             setTodoTitle('');
             setTodoDescription(''); 
             setShowToggle(true);
@@ -114,111 +83,27 @@ const Todo = () => {
     }
 
     const handleKeyStroke = (e) => {
-        if (e.key === 'Enter') {
+        const { key, ctrlKey } = e
+
+        if (key === 'Enter') {
             handleAddTodo(e)
+        } else if (key === 'ArrowRight' && !ctrlKey) {
+            e.preventDefault()
+            descriptionInputRef.current.focus()
+        } else if (key === 'ArrowLeft' && !ctrlKey) {
+            e.preventDefault()
+            titleInputRef.current.focus()
+        } else if (key === 'ArrowLeft' && ctrlKey){
+            e.preventDefault()
+            const input = e.target
+            input.selectionStart = 0
+            input.selectionEnd = 0
+        } else if (key === 'ArrowRight' && ctrlKey){
+            e.preventDefault()
+            const input = e.target
+            input.selectionStart = input.value.length
+            input.selectionEnd = input.value.length
         }
-    }
-
-    const handleRemoveAll = async () => {
-        try {
-            if (showTodo) {
-                setTodos([]);
-                await api.get('/remaining')
-                    .then((res) => res.data.map(
-                        item => api.delete(`/remaining/${item.id}`)
-                    )) 
-                    .catch((err) => console.error(err))
-            } else {
-                setCompletedTodo([]);
-                await api.get('/completed')
-                    .then((res) => res.data.map(
-                        item => api.delete(`/completed/${item.id}`)
-                    )) 
-                    .catch((err) => console.error(err))
-            }
-        } catch (error) {
-            console.error('Error removing items:', error);
-        }
-    };
-
-    const handleEditTodo = (editedTodos) => {
-        setTodos(editedTodos)
-    }
-
-    const handleDeleteTodo = async (id, todos) => {
-        const updatedTodos = [...todos];
-        updatedTodos.splice(id, 1);
-        
-        if (showTodo) {
-            await api.delete(`/remaining/${id}`)
-            setTodos(updatedTodos);
-        } else {
-            await api.delete(`/completed/${id}`)
-            setCompletedTodo(updatedTodos);
-        }
-    }
-    
-    const handleCompleteTodo = async (id) => {
-        try {
-            const response = await api.get(`/remaining/${id}`)
-            let data = response.data;
-            
-            await api.post(`/completed`, {
-                id: data.id,
-                title: data.title,
-                description: data.description,
-                dateTime: data.dateTime,
-            })
-
-            await api.delete(`/remaining/${id}`)
-
-            setCompletedTodo(prevCompletedTodo => [ data, ...prevCompletedTodo ])
-            setTodos(prevTodos => (
-                prevTodos.filter(todo => todo.id !== id)
-            ))
-        } catch (error) {
-            console.error(error)
-        }
-    }
-    
-    const handleToggleShow = (e) => {
-        setShowTodo(e)
-    }
-
-    const handleUndoTodo = async (id, tasks) => {
-        try {
-            const response = await api.get(`/completed/${id}`)
-            const undoTask = response.data
-            await api.post(`/remaining`, {
-                id: undoTask.id, 
-                title: undoTask.title,  
-                description: undoTask.description,
-                dateTime: undoTask.dateTime,
-            })
-            await api.delete(`/completed/${id}`)
-
-            setTodos(prevTodos => [undoTask, ...prevTodos])
-            setCompletedTodo(prevCompletedTodos => (
-                prevCompletedTodos.filter(todo => todo.id !== id)
-            ))
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    useEffect(() => {
-        const fetchSortingData = async () => {
-            if (showTodo) {
-                setSortingData(todos)
-            } else {
-                setSortingData(completedTodo)
-            }
-        }
-        fetchSortingData()
-    }, [showTodo, todos, completedTodo])
-
-    const handleSortedData = (data) => {
-        showTodo ? setTodos(data) : setCompletedTodo(data)
     }
 
     return (
@@ -242,6 +127,7 @@ const Todo = () => {
                                         )}
                                         
                                         <input 
+                                            ref={titleInputRef}
                                             type="text" 
                                             placeholder='Task Title' 
                                             value={todoTitle}
@@ -258,6 +144,7 @@ const Todo = () => {
                                         )}
                                         
                                         <input 
+                                            ref={descriptionInputRef}
                                             type="text" 
                                             placeholder='Task description' 
                                             value={todoDescription}
@@ -271,7 +158,7 @@ const Todo = () => {
                                 {/* Add button */}
                                 <div className='w-ful flex justify-center'>
                                     <AddRemoveBtn 
-                                        handleAddTodo={handleAddTodo} 
+                                        handleAddRemoveTodo={handleAddTodo} 
                                         text={'ADD'} 
                                         icon={faPlus}
                                     />
@@ -279,9 +166,10 @@ const Todo = () => {
                             </form>
                         </div>
                         
-                        {(todos.length == 0 && completedTodo.length == 0) && (
+                        {(todoData.todo.length == 0 && completedTodoData.completedTodo.length == 0) && (
                             <div className='w-full flex flex-col items-center justify-center gap-y-20 bg-gray-40 rounded-md mt-4'>
                                 <img src={doSomething}  className=' h-full animate-pulse'/>
+                                
                                 <div>
                                     <p className=' text-center font-mooli text-[1.4rem] md:text-4xl pt-6 pb-3 font-bold bg-gradient-to-br from-rose-400 via-blue-500 to-emerald-300 bg-clip-text text-transparent'>
                                         Thode Todos add karlo bhai.........
@@ -295,40 +183,23 @@ const Todo = () => {
 
                         {/* controller area */}
                         <div className={`py-3 ${showToggle ? 'block' : 'hidden'}  `}>
-                            <NavBar 
-                                onRemoveAll={handleRemoveAll} 
-                                onToggleShow={handleToggleShow} 
-                                todos={todos} 
-                                completedTodo={completedTodo} 
-                            />
+                            <NavBar />
                         </div>
 
-                        {showTodo ? (
+                        {status ? (
                             <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[44rem] overflow-y-auto`}>
-                                <TodoContent 
-                                    todos={todos} 
-                                    onEditTodo={handleEditTodo} 
-                                    onDeleteTodo={handleDeleteTodo} 
-                                    onCompleteTodo={handleCompleteTodo}
-                                />
+                                <TodoContent />
                             </div>
                         ) : (
                             <div className={`max-h-[28rem] sm:max-h-[26.7rem] md:max-h-[45rem] overflow-y-auto `}>
-                                <CompletedTodo 
-                                    completedTasks={completedTodo} 
-                                    removeTask={handleDeleteTodo} 
-                                    undoTask={handleUndoTodo}
-                                />
+                                <CompletedTodo />
                             </div>
                         )}
 
-                        {isSmallScreen && sortingData.length > 0 && (
+                        {/* sort data */}
+                        {isSmallScreen && (
                             <div className='absolute bottom-0 right-1/2 transform translate-x-1/2 '>
-                                <SortSection
-                                    sortingData={sortingData}
-                                    handleSortedData={handleSortedData}
-                                    showTodo={showTodo}
-                                />
+                                <SortSection />
                             </div>
                         )}
                     </div>

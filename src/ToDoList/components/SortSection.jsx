@@ -2,6 +2,9 @@ import { faArrowDown91, faArrowDownZA, faArrowUp91, faArrowUpZA, faSort } from '
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setTodoData } from '../../redux/slices/todoSlice'
+import { setCompletedTodoData } from '../../redux/slices/completedTodoSlice'
 
 const sortOptions = [
     { title: 'A to Z', icon: <FontAwesomeIcon icon={faArrowUpZA} className='text-xl'/> },
@@ -10,7 +13,13 @@ const sortOptions = [
     { title: `Creation ↓`, icon: <FontAwesomeIcon icon={faArrowDown91} className='text-xl'/> },
 ]
 
-const SortSection = ({ sortingData, handleSortedData, showTodo }) => {
+const SortSection = () => {
+    const todoData = useSelector((state) => state.todoData.todo)
+    const completedTodoData = useSelector((state) => state.completedTodoData.completedTodo)
+    const status = useSelector((state) => state.status)
+    const dispatch = useDispatch()
+
+    const [sortingData, setSortingData] = useState(todoData)
     const [showSortOption, setShowSortOption] = useState(false)
     const [sortMode, setSortMode] = useState('title')
     const [sortOption, setSortOption] = useState('')
@@ -54,7 +63,9 @@ const SortSection = ({ sortingData, handleSortedData, showTodo }) => {
                 sortedData = sortingData;
                 break;
         }
-        handleSortedData(sortedData);
+        status 
+            ? dispatch(setTodoData(sortedData))
+            : dispatch(setCompletedTodoData(sortedData))
     };
 
     useEffect(() => {
@@ -63,7 +74,8 @@ const SortSection = ({ sortingData, handleSortedData, showTodo }) => {
 
     useEffect(() => {
         setShowSortOption(false)
-    },[showTodo])
+        setSortingData(status ? todoData : completedTodoData)
+    },[status, todoData, completedTodoData])
 
     const handleModeShow = (text, index) => {
         setSortOption(text)
@@ -81,14 +93,16 @@ const SortSection = ({ sortingData, handleSortedData, showTodo }) => {
     }
 
     return <>
-        <motion.div 
-        className='bg-slate-800 hover:bg-cyan-950 text-cyan-200 p-2 md:p-3 rounded-full transition-all animate-bounce cursor-pointer'
-        onClick={handleShowSortOption}>
-            <FontAwesomeIcon 
-                icon={faSort} 
-                className='md:text-xl' 
-            />
-        </motion.div>
+        {sortingData.length > 1 && (
+            <motion.div 
+            className='bg-slate-800 hover:bg-cyan-950 text-cyan-200 p-2 md:p-3 rounded-full transition-all animate-bounce cursor-pointer'
+            onClick={handleShowSortOption}>
+                <FontAwesomeIcon 
+                    icon={faSort} 
+                    className='md:text-xl' 
+                />
+            </motion.div>
+        )}
 
         {showSortOption && (
             <motion.div 

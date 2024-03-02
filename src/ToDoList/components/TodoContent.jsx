@@ -5,8 +5,14 @@ import { faBan, faCheck, faFloppyDisk } from '@fortawesome/free-solid-svg-icons'
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import api from '../../api/api';
 import Popup from './Popup';
+import { useDispatch, useSelector } from 'react-redux';
+import { editTodoInUI, markAsCompleteInUI, removeTodoFromUI } from '../../redux/slices/todoSlice';
+import { addCompletedTask } from '../../redux/slices/completedTodoSlice';
 
-const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
+const TodoContent = () => {
+    const todoData = useSelector((state) => state.todoData.todo)
+    const dispatch = useDispatch()
+
     const iconData = [
         { icon: faPenToSquare, bgColor: 'text-green-300 ',  onHover: 'hover:text-green-600 ' },
         { icon: faTrashCan, bgColor: 'text-red-400',  onHover: 'hover:text-red-500' },
@@ -16,49 +22,70 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
     const [editId, setEditId] = useState(null);
     const [editTitle, setEditTitle] = useState('');
     const [editDescription, setEditDescription] = useState('');
-    const [popupVisibility, setPopupVisibility] = useState(Array(todos.length).fill(false));
+    const [popupVisibility, setPopupVisibility] = useState(Array(todoData.length).fill(false));
 
     const editTodo = (id, index) => {
         setEditId(id);
-        setEditTitle(todos[index].title);
-        setEditDescription(todos[index].description);
+        setEditTitle(todoData[index].title);
+        setEditDescription(todoData[index].description);
     };
 
-    const handleSave = async (id, index) => {
+    const handleSave = async (id) => {
         try {
+            const dateTime = (todoData.filter(a => a.id ===id )).map(a => a.dateTime)
             await api.put(`/remaining/${id}`, {
                 id,
                 title: editTitle,
                 description: editDescription,
-                dateTime: (todos.filter(a => a.id ===id )).map(a => a.dateTime),
+                dateTime,
             })
 
-            onEditTodo(prevTodos => (
-                prevTodos.map(todo => (
-                    todo.id === id
-                        ? { ...todo, title: editTitle, description: editDescription }
-                        : todo
-                ))
-            ))
-            setEditId(null);
+            dispatch(editTodoInUI({
+                id,
+                title: editTitle,
+                description: editDescription,
+                dateTime,
+            }))
+            setEditId(null); 
         } catch (error) {
             console.error(error)
         }
     };
 
-    const deleteTodo = (id, todos) => {
-        onDeleteTodo(id, todos)
+    const deleteTodo = async(id) => {
+        try {
+            await api.delete(`/remaining/${id}`)
+            dispatch(removeTodoFromUI(id))
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     const completedTodo = async (id) => {
-        onCompleteTodo(id)
+        try {
+            const completedTask = todoData.filter((task) => task.id === id && task)
+                        
+            await api.post(`/completed`, {
+                id: completedTask[0].id,
+                title: completedTask[0].title,
+                description: completedTask[0].description,
+                dateTime: completedTask[0].dateTime,
+            })
+
+            dispatch(markAsCompleteInUI(completedTask))
+            dispatch(addCompletedTask(completedTask))
+
+            await api.delete(`/remaining/${id}`)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     const handleIconClick = (id, index, icon) => {
         if (icon === faPenToSquare) {
             editTodo(id, index);
         } else if (icon === faTrashCan) {
-            deleteTodo(id, todos);
+            deleteTodo(id);
         } else if (icon === faCheck) {
             completedTodo(id);
         }
@@ -71,12 +98,12 @@ const TodoContent = ({ todos, onEditTodo, onDeleteTodo, onCompleteTodo }) => {
     }
 
     useEffect(() => {
-        setPopupVisibility(Array(todos.length).fill(false))
-    }, [todos])
+        setPopupVisibility(Array(todoData.length).fill(false))
+    }, [todoData])
 
     return (
         <div className='space-y-2 md:space-y-3 py-1 rounded-lg overflow-hidden '>
-            {todos.map((todo, index) => (
+            {todoData.map((todo, index) => (
                 <motion.div
                 initial={{ y: -200 }}
                 animate={{ y: 0 }}
