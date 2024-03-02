@@ -23,6 +23,7 @@ const Todo = () => {
     const titleInputRef = useRef(null)
 
     const [showToggle, setShowToggle] = useState(false);
+    const [showLoadingImg, setShowLoadingImg] = useState(true)
 
     const [isSmScreen, setIsSmScreen] = useState(window.innerWidth >= 1024);
     const comparableWidth = 380
@@ -63,7 +64,13 @@ const Todo = () => {
         todoData.todo.length > 0 || completedTodoData.completedTodo.length > 0 
             ? setShowToggle(true) 
             : setShowToggle(false)
-    }, [todoData.todo, completedTodoData.completedTodo]);
+    }, [todoData.todo, completedTodoData.completedTodo])
+
+    useEffect(() => {
+        todoData.todo.length == 0 && completedTodoData.completedTodo.length == 0
+            ? setShowLoadingImg(true)
+            : setShowLoadingImg(false)
+    }, [todoData.todo, completedTodoData.completedTodo])
     
     const handleAddTodo = async (e) => {
         e.preventDefault();
@@ -166,7 +173,7 @@ const Todo = () => {
                             </form>
                         </div>
                         
-                        {(todoData.todo.length == 0 && completedTodoData.completedTodo.length == 0) && (
+                        {showLoadingImg && (
                             <div className='w-full flex flex-col items-center justify-center gap-y-20 bg-gray-40 rounded-md mt-4'>
                                 <img src={doSomething}  className=' h-full animate-pulse'/>
                                 
